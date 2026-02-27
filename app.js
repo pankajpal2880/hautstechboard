@@ -1,3 +1,27 @@
+const currency = (value) => `$${Math.round(value).toLocaleString()}`;
+
+const departmentReports = {
+  sales: {
+    source: 'Sales department page / submitted sales report',
+    updatedAt: '2026-02-27 09:15',
+    matrix: {
+      today: { openRfqNum: 8, openRfqVal: 42000, convPoNum: 3, convPoVal: 18000, poRecNum: 2, poRecVal: 12500 },
+      month: { openRfqNum: 96, openRfqVal: 510000, convPoNum: 38, convPoVal: 234000, poRecNum: 52, poRecVal: 355000 },
+      year: { openRfqNum: 1080, openRfqVal: 5780000, convPoNum: 446, convPoVal: 2690000, poRecNum: 615, poRecVal: 4180000 },
+    },
+  },
+  purchase: {
+    source: 'Purchase department page / submitted purchase report',
+    updatedAt: '2026-02-27 09:10',
+  },
+  operations: {
+    source: 'Operations department page / submitted operations report',
+    updatedAt: '2026-02-27 08:45',
+  },
+  marketing: {
+    source: 'Marketing department page / submitted marketing report',
+    updatedAt: '2026-02-27 08:30',
+  },
 const periods = ['today', 'month', 'year'];
 
 const getValue = (id) => Number(document.getElementById(id).value);
@@ -20,6 +44,7 @@ const timelineData = {
   daily: {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     rfqOpenNum: [2, 3, 4, 3, 5, 4, 6],
+    rfqConvNum: [1, 1, 2, 1, 2, 2, 3],
     rfqOpenVal: [9000, 13000, 17000, 14500, 21000, 16500, 24000],
     rfqConvNum: [1, 1, 2, 1, 2, 2, 3],
     rfqConvVal: [5000, 6200, 9300, 7400, 10600, 9800, 14500],
@@ -29,6 +54,7 @@ const timelineData = {
   monthly: {
     labels: ['W1', 'W2', 'W3', 'W4'],
     rfqOpenNum: [18, 22, 27, 29],
+    rfqConvNum: [7, 8, 11, 12],
     rfqOpenVal: [120000, 133000, 145000, 112000],
     rfqConvNum: [7, 8, 11, 12],
     rfqConvVal: [61000, 54000, 59000, 60000],
@@ -38,6 +64,7 @@ const timelineData = {
   yearly: {
     labels: ['Q1', 'Q2', 'Q3', 'Q4'],
     rfqOpenNum: [240, 260, 275, 305],
+    rfqConvNum: [94, 108, 116, 128],
     rfqOpenVal: [1250000, 1390000, 1510000, 1630000],
     rfqConvNum: [94, 108, 116, 128],
     rfqConvVal: [590000, 640000, 700000, 760000],
@@ -49,6 +76,7 @@ const timelineData = {
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
+  plugins: { legend: { labels: { color: '#334155', font: { family: 'Inter' } } } },
   plugins: {
     legend: { labels: { color: '#334155', font: { family: 'Inter' } } },
   },
@@ -82,6 +110,50 @@ const poChart = new Chart(document.getElementById('poChart'), {
   options: chartOptions,
 });
 
+const setText = (id, value) => {
+  document.getElementById(id).textContent = value;
+};
+
+const renderOverview = () => {
+  const sales = departmentReports.sales.matrix;
+
+  setText('m-open-rfq-num-today', sales.today.openRfqNum);
+  setText('m-open-rfq-val-today', currency(sales.today.openRfqVal));
+  setText('m-conv-po-num-today', sales.today.convPoNum);
+  setText('m-conv-po-val-today', currency(sales.today.convPoVal));
+  setText('m-po-rec-num-today', sales.today.poRecNum);
+  setText('m-po-rec-val-today', currency(sales.today.poRecVal));
+
+  setText('m-open-rfq-num-month', sales.month.openRfqNum);
+  setText('m-open-rfq-val-month', currency(sales.month.openRfqVal));
+  setText('m-conv-po-num-month', sales.month.convPoNum);
+  setText('m-conv-po-val-month', currency(sales.month.convPoVal));
+  setText('m-po-rec-num-month', sales.month.poRecNum);
+  setText('m-po-rec-val-month', currency(sales.month.poRecVal));
+
+  setText('m-open-rfq-num-year', sales.year.openRfqNum);
+  setText('m-open-rfq-val-year', currency(sales.year.openRfqVal));
+  setText('m-conv-po-num-year', sales.year.convPoNum);
+  setText('m-conv-po-val-year', currency(sales.year.convPoVal));
+  setText('m-po-rec-num-year', sales.year.poRecNum);
+  setText('m-po-rec-val-year', currency(sales.year.poRecVal));
+
+  const totalOpenCount = sales.today.openRfqNum + sales.month.openRfqNum + sales.year.openRfqNum;
+  const totalOpenValue = sales.today.openRfqVal + sales.month.openRfqVal + sales.year.openRfqVal;
+  const totalConvCount = sales.today.convPoNum + sales.month.convPoNum + sales.year.convPoNum;
+  const totalPoValue = sales.today.poRecVal + sales.month.poRecVal + sales.year.poRecVal;
+
+  setText('kpi-rfq-open-count', totalOpenCount.toLocaleString());
+  setText('kpi-rfq-open-value', currency(totalOpenValue));
+  setText('kpi-conv-count', totalConvCount.toLocaleString());
+  setText('kpi-po-value', currency(totalPoValue));
+
+  setText('sales-source-note', `${departmentReports.sales.source}. Updated: ${departmentReports.sales.updatedAt}`);
+  setText('purchase-source-note', `${departmentReports.purchase.source}. Updated: ${departmentReports.purchase.updatedAt}`);
+  setText('ops-source-note', `${departmentReports.operations.source}. Updated: ${departmentReports.operations.updatedAt}`);
+  setText('marketing-source-note', `${departmentReports.marketing.source}. Updated: ${departmentReports.marketing.updatedAt}`);
+
+  setText('last-sync', `Last sync: ${departmentReports.sales.updatedAt}`);
 const loadStateFromInputs = () => {
   const ids = [
     ['rfqOpenNum', ['open-rfq-num-today', 'open-rfq-num-month', 'open-rfq-num-year']],
@@ -125,6 +197,10 @@ const updatePoChart = () => {
   poChart.update();
 };
 
+document.getElementById('rfq-period').addEventListener('change', updateRfqChart);
+document.getElementById('po-period').addEventListener('change', updatePoChart);
+
+renderOverview();
 document.getElementById('apply-sales-btn').addEventListener('click', loadStateFromInputs);
 document.getElementById('rfq-period').addEventListener('change', updateRfqChart);
 document.getElementById('po-period').addEventListener('change', updatePoChart);

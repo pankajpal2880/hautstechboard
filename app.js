@@ -1,4 +1,168 @@
-<<<<<<< codex/upgrade-repository-to-modern-admin-dashboard-aqygx2
+let salesEntries = [12000, 18500, 9700];
+let purchaseEntries = [8000, 6200, 9100];
+let leadEntries = [44, 58, 63];
+
+const currency = (value) => `$${Math.round(value).toLocaleString()}`;
+const statusNode = document.getElementById('status-msg');
+
+const showStatus = (text, color = '#64748b') => {
+  statusNode.textContent = text;
+  statusNode.style.color = color;
+};
+
+const renderChips = (nodeId, prefix, values) => {
+  const node = document.getElementById(nodeId);
+  node.innerHTML = values
+    .map((value, index) => `<span class="chip">${prefix} ${index + 1}: ${value}</span>`)
+    .join('');
+};
+
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { labels: { color: '#334155', font: { family: 'Inter' } } } },
+  scales: {
+    x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(148,163,184,.2)' } },
+    y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(148,163,184,.2)' } },
+  },
+};
+
+const salesChart = new Chart(document.getElementById('salesChart'), {
+  type: 'line',
+  data: {
+    labels: salesEntries.map((_, i) => `Sale ${i + 1}`),
+    datasets: [{
+      label: 'Sales',
+      data: salesEntries,
+      borderColor: '#2563eb',
+      backgroundColor: 'rgba(37,99,235,.2)',
+      fill: true,
+      tension: .35,
+    }],
+  },
+  options: chartOptions,
+});
+
+const purchaseChart = new Chart(document.getElementById('purchaseChart'), {
+  type: 'bar',
+  data: {
+    labels: purchaseEntries.map((_, i) => `Purchase ${i + 1}`),
+    datasets: [{
+      label: 'Purchases',
+      data: purchaseEntries,
+      backgroundColor: '#f97316',
+      borderRadius: 7,
+    }],
+  },
+  options: { ...chartOptions, plugins: { legend: { display: false } } },
+});
+
+const leadChart = new Chart(document.getElementById('leadChart'), {
+  type: 'line',
+  data: {
+    labels: leadEntries.map((_, i) => `Lead KPI ${i + 1}`),
+    datasets: [{
+      label: 'Leads',
+      data: leadEntries,
+      borderColor: '#16a34a',
+      backgroundColor: 'rgba(22,163,74,.18)',
+      fill: true,
+      tension: .35,
+    }],
+  },
+  options: chartOptions,
+});
+
+const refreshKpis = () => {
+  const salesTotal = salesEntries.reduce((sum, v) => sum + v, 0);
+  const purchaseTotal = purchaseEntries.reduce((sum, v) => sum + v, 0);
+  const leadTotal = leadEntries.reduce((sum, v) => sum + v, 0);
+  const balance = salesTotal - purchaseTotal;
+
+  document.getElementById('kpi-sales').textContent = currency(salesTotal);
+  document.getElementById('kpi-purchase').textContent = currency(purchaseTotal);
+  document.getElementById('kpi-lead').textContent = leadTotal.toLocaleString();
+  document.getElementById('kpi-balance').textContent = currency(balance);
+
+  document.getElementById('kpi-sales-count').textContent = `${salesEntries.length} entries`;
+  document.getElementById('kpi-purchase-count').textContent = `${purchaseEntries.length} entries`;
+  document.getElementById('kpi-lead-count').textContent = `${leadEntries.length} entries`;
+
+  const balanceNode = document.getElementById('kpi-balance-status');
+  balanceNode.textContent = balance >= 0 ? 'Healthy positive balance' : 'Negative balance';
+  balanceNode.style.color = balance >= 0 ? '#16a34a' : '#dc2626';
+};
+
+const refreshCharts = () => {
+  salesChart.data.labels = salesEntries.map((_, i) => `Sale ${i + 1}`);
+  salesChart.data.datasets[0].data = salesEntries;
+  salesChart.update();
+
+  purchaseChart.data.labels = purchaseEntries.map((_, i) => `Purchase ${i + 1}`);
+  purchaseChart.data.datasets[0].data = purchaseEntries;
+  purchaseChart.update();
+
+  leadChart.data.labels = leadEntries.map((_, i) => `Lead KPI ${i + 1}`);
+  leadChart.data.datasets[0].data = leadEntries;
+  leadChart.update();
+};
+
+const addValue = (inputId, targetArray, label) => {
+  const input = document.getElementById(inputId);
+  const value = Number(input.value);
+  if (!Number.isFinite(value) || value < 0) {
+    showStatus(`Please enter a valid ${label} value.`, '#dc2626');
+    return;
+  }
+  targetArray.push(value);
+  input.value = '';
+  renderChips('sales-list', 'Sale', salesEntries);
+  renderChips('purchase-list', 'Purchase', purchaseEntries);
+  renderChips('lead-list', 'Lead', leadEntries);
+  refreshCharts();
+  refreshKpis();
+  showStatus(`${label} added successfully.`, '#16a34a');
+};
+
+const parseReport = (raw) => {
+  const data = JSON.parse(raw);
+  const sanitize = (arr) => Array.isArray(arr)
+    ? arr.map(Number).filter((v) => Number.isFinite(v) && v >= 0)
+    : null;
+
+  const sales = sanitize(data.sales);
+  const purchase = sanitize(data.purchase);
+  const lead = sanitize(data.lead);
+
+  if (!sales || !purchase || !lead) {
+    throw new Error('Report must contain sales, purchase, and lead arrays.');
+  }
+
+  salesEntries = sales;
+  purchaseEntries = purchase;
+  leadEntries = lead;
+};
+
+document.getElementById('add-sale-btn').addEventListener('click', () => addValue('sale-input', salesEntries, 'Sale'));
+document.getElementById('add-purchase-btn').addEventListener('click', () => addValue('purchase-input', purchaseEntries, 'Purchase'));
+document.getElementById('add-lead-btn').addEventListener('click', () => addValue('lead-input', leadEntries, 'Lead'));
+
+document.getElementById('apply-report-btn').addEventListener('click', () => {
+  const raw = document.getElementById('report-text').value.trim();
+  if (!raw) {
+    showStatus('Paste report JSON or upload a JSON file.', '#dc2626');
+    return;
+  }
+  try {
+    parseReport(raw);
+    renderChips('sales-list', 'Sale', salesEntries);
+    renderChips('purchase-list', 'Purchase', purchaseEntries);
+    renderChips('lead-list', 'Lead', leadEntries);
+    refreshCharts();
+    refreshKpis();
+    showStatus('Report applied successfully.', '#16a34a');
+  } catch (error) {
+    showStatus(error.message, '#dc2626');
 const operationsLabels = ['Logistics', 'Support', 'Infrastructure', 'Quality'];
 
 let salesEntries = [12000, 9000, 10500, 13000];
@@ -11,7 +175,6 @@ const sharedOptions = {
   scales: {
     x: { ticks: { color: '#6b7280' }, grid: { color: 'rgba(148, 163, 184, 0.18)' } },
     y: { ticks: { color: '#6b7280' }, grid: { color: 'rgba(148, 163, 184, 0.18)' } },
-=======
 const salesLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
 const marketingLabels = ['SEO', 'Email', 'Social', 'Paid Ads', 'Referral'];
 const operationsLabels = ['Logistics', 'Support', 'Infrastructure', 'Quality'];
@@ -39,17 +202,14 @@ const sharedOptions = {
       ticks: { color: '#6b7280' },
       grid: { color: 'rgba(148, 163, 184, 0.18)' },
     },
->>>>>>> main
   },
 };
 
 const salesChart = new Chart(document.getElementById('salesLineChart'), {
   type: 'line',
   data: {
-<<<<<<< codex/upgrade-repository-to-modern-admin-dashboard-aqygx2
     labels: salesEntries.map((_, index) => `Sale ${index + 1}`),
     datasets: [{ label: 'Sales ($)', data: salesEntries, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.2)', fill: true, tension: 0.3 }],
-=======
     labels: salesLabels,
 new Chart(document.getElementById('salesLineChart'), {
   type: 'line',
@@ -67,7 +227,6 @@ new Chart(document.getElementById('salesLineChart'), {
         pointBackgroundColor: '#2563eb',
       },
     ],
->>>>>>> main
   },
   options: sharedOptions,
 });
@@ -75,12 +234,10 @@ new Chart(document.getElementById('salesLineChart'), {
 const marketingChart = new Chart(document.getElementById('marketingBarChart'), {
   type: 'bar',
   data: {
-<<<<<<< codex/upgrade-repository-to-modern-admin-dashboard-aqygx2
     labels: marketingEntries.map((_, index) => `KPI ${index + 1}`),
     datasets: [{ label: 'Marketing KPI', data: marketingEntries, backgroundColor: '#0ea5e9', borderRadius: 8 }],
   },
   options: { ...sharedOptions, plugins: { legend: { display: false } } },
-=======
     labels: marketingLabels,
 new Chart(document.getElementById('marketingBarChart'), {
   type: 'bar',
@@ -99,14 +256,14 @@ new Chart(document.getElementById('marketingBarChart'), {
     ...sharedOptions,
     plugins: { legend: { display: false } },
   },
->>>>>>> main
 });
 
 const operationsChart = new Chart(document.getElementById('operationsPieChart'), {
   type: 'pie',
   data: {
     labels: operationsLabels,
-<<<<<<< codex/upgrade-repository-to-modern-admin-dashboard-aqygx2
+
+    < codex/upgrade-repository-to-modern-admin-dashboard-aqygx2
     datasets: [{ label: 'Operations Split', data: [35, 25, 22, 18], backgroundColor: ['#2563eb', '#16a34a', '#f97316', '#a855f7'], borderColor: '#fff', borderWidth: 2 }],
   },
   options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } },
@@ -247,11 +404,29 @@ document.getElementById('apply-report-btn').addEventListener('click', () => {
     applyReportObject(report);
   } catch (error) {
     showMessage('Invalid JSON format in report input.', '#dc2626');
+
   }
 });
 
 document.getElementById('report-file').addEventListener('change', (event) => {
   const file = event.target.files[0];
+  if (!file) {
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const raw = String(reader.result || '');
+    document.getElementById('report-text').value = raw;
+    try {
+      parseReport(raw);
+      renderChips('sales-list', 'Sale', salesEntries);
+      renderChips('purchase-list', 'Purchase', purchaseEntries);
+      renderChips('lead-list', 'Lead', leadEntries);
+      refreshCharts();
+      refreshKpis();
+      showStatus('Uploaded report applied successfully.', '#16a34a');
+    } catch (error) {
+      showStatus(error.message, '#dc2626');
   if (!file) return;
   const reader = new FileReader();
   reader.onload = () => {
@@ -267,11 +442,16 @@ document.getElementById('report-file').addEventListener('change', (event) => {
   reader.readAsText(file);
 });
 
+renderChips('sales-list', 'Sale', salesEntries);
+renderChips('purchase-list', 'Purchase', purchaseEntries);
+renderChips('lead-list', 'Lead', leadEntries);
+refreshCharts();
+refreshKpis();
+showStatus('Dashboard loaded.');
 renderEntryList('sales-list', salesEntries, 'Sale');
 renderEntryList('marketing-list', marketingEntries, 'KPI');
 refreshCharts();
 refreshKpis();
-=======
 new Chart(document.getElementById('operationsPieChart'), {
   type: 'pie',
   data: {
@@ -357,4 +537,4 @@ const updateDashboard = () => {
 };
 
 document.getElementById('apply-values-btn').addEventListener('click', updateDashboard);
->>>>>>> main
+

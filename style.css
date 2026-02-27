@@ -1,0 +1,15 @@
+body {
+  font-family: Arial;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+}
+
+.card {
+  padding: 30px;
+  background: #f3f3f3;
+  border-radius: 8px;
+}

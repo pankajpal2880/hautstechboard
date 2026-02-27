@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hautstech Sales Dashboard</title>
   <title>Hautstech Business Dashboard</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,6 +23,125 @@
 <body>
   <div class="dashboard-layout">
     <aside class="sidebar">
+      <div class="brand">Hautstech</div>
+      <nav class="menu">
+        <a class="menu-link active" href="#">Sales Dashboard</a>
+        <a class="menu-link" href="#sales-table">Sales Matrix</a>
+        <a class="menu-link" href="#rfq-chart-card">RFQ Graph</a>
+        <a class="menu-link" href="#po-chart-card">PO Graph</a>
+      </nav>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <h1>Sales Performance Dashboard</h1>
+        <div class="admin-badge">● Live Metrics</div>
+      </header>
+
+      <section class="content">
+        <article class="card" id="sales-table">
+          <h2>Sales</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Period</th>
+                  <th>Open RFQ in numbers</th>
+                  <th>Open RFQ in value</th>
+                  <th>RFQ converted to PO in numbers</th>
+                  <th>RFQ converted to PO in value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Today</td>
+                  <td><input id="open-rfq-num-today" type="number" min="0" value="8" /></td>
+                  <td><input id="open-rfq-val-today" type="number" min="0" value="42000" /></td>
+                  <td><input id="conv-po-num-today" type="number" min="0" value="3" /></td>
+                  <td><input id="conv-po-val-today" type="number" min="0" value="18000" /></td>
+                </tr>
+                <tr>
+                  <td>This month</td>
+                  <td><input id="open-rfq-num-month" type="number" min="0" value="96" /></td>
+                  <td><input id="open-rfq-val-month" type="number" min="0" value="510000" /></td>
+                  <td><input id="conv-po-num-month" type="number" min="0" value="38" /></td>
+                  <td><input id="conv-po-val-month" type="number" min="0" value="234000" /></td>
+                </tr>
+                <tr>
+                  <td>This year</td>
+                  <td><input id="open-rfq-num-year" type="number" min="0" value="1080" /></td>
+                  <td><input id="open-rfq-val-year" type="number" min="0" value="5780000" /></td>
+                  <td><input id="conv-po-num-year" type="number" min="0" value="446" /></td>
+                  <td><input id="conv-po-val-year" type="number" min="0" value="2690000" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-wrap second">
+            <table>
+              <thead>
+                <tr>
+                  <th>Period</th>
+                  <th>PO received in numbers</th>
+                  <th>PO received in value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Today</td>
+                  <td><input id="po-rec-num-today" type="number" min="0" value="2" /></td>
+                  <td><input id="po-rec-val-today" type="number" min="0" value="12500" /></td>
+                </tr>
+                <tr>
+                  <td>This month</td>
+                  <td><input id="po-rec-num-month" type="number" min="0" value="52" /></td>
+                  <td><input id="po-rec-val-month" type="number" min="0" value="355000" /></td>
+                </tr>
+                <tr>
+                  <td>This year</td>
+                  <td><input id="po-rec-num-year" type="number" min="0" value="615" /></td>
+                  <td><input id="po-rec-val-year" type="number" min="0" value="4180000" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <button id="apply-sales-btn" type="button">Apply Sales Values</button>
+          <p id="status-msg">Ready</p>
+        </article>
+
+        <article class="card" id="rfq-chart-card">
+          <div class="card-head">
+            <h3>Graph for RFQ</h3>
+            <label>
+              View:
+              <select id="rfq-period">
+                <option value="daily">Daily</option>
+                <option value="monthly" selected>Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </label>
+          </div>
+          <canvas id="rfqChart"></canvas>
+        </article>
+
+        <article class="card" id="po-chart-card">
+          <div class="card-head">
+            <h3>Graph for PO</h3>
+            <label>
+              View:
+              <select id="po-period">
+                <option value="daily">Daily</option>
+                <option value="monthly" selected>Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </label>
+          </div>
+          <canvas id="poChart"></canvas>
+        </article>
+      </section>
+    </main>
       <div class="brand">Hautstech One</div>
       <nav class="menu">
         <a class="menu-link active" href="#">Dashboard</a>

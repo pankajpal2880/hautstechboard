@@ -22,6 +22,10 @@
         <a class="nav-link" href="#marketing-module">Marketing</a>
         <a class="nav-link" href="#operations-module">Operations</a>
         <a class="nav-link" href="#financial-module">Financial</a>
+        <a class="nav-link" href="#">Analytics</a>
+        <a class="nav-link" href="#">Reports</a>
+        <a class="nav-link" href="#">Customers</a>
+        <a class="nav-link" href="#">Settings</a>
       </nav>
     </aside>
 
@@ -100,12 +104,33 @@
           <button id="apply-values-btn" type="button">Apply Module Values</button>
           <span id="message" role="status" aria-live="polite"></span>
         </div>
+            <h2>Total Revenue</h2>
+            <p>$182,450</p>
+            <span class="kpi-trend positive">+8.2% vs last month</span>
+          </article>
+          <article class="kpi-card">
+            <h2>New Customers</h2>
+            <p>1,248</p>
+            <span class="kpi-trend positive">+5.1% vs last month</span>
+          </article>
+          <article class="kpi-card">
+            <h2>Conversion Rate</h2>
+            <p>4.6%</p>
+            <span class="kpi-trend negative">-0.4% vs last month</span>
+          </article>
+          <article class="kpi-card">
+            <h2>Open Tickets</h2>
+            <p>73</p>
+            <span class="kpi-trend positive">-11 resolved today</span>
+          </article>
+        </section>
 
         <section class="charts-grid">
           <article class="chart-card chart-card-wide">
             <div class="chart-header">
               <h3>Sales Trend</h3>
               <span>Updated from Sales module</span>
+              <span>Last 7 months</span>
             </div>
             <canvas id="salesLineChart"></canvas>
           </article>
@@ -114,6 +139,7 @@
             <div class="chart-header">
               <h3>Marketing Channels</h3>
               <span>Updated from Marketing module</span>
+              <span>Campaign performance</span>
             </div>
             <canvas id="marketingBarChart"></canvas>
           </article>
@@ -122,6 +148,7 @@
             <div class="chart-header">
               <h3>Operations Allocation</h3>
               <span>Updated from Operations module</span>
+              <span>Department split</span>
             </div>
             <canvas id="operationsPieChart"></canvas>
           </article>

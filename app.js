@@ -10,6 +10,9 @@ const sharedOptions = {
       labels: {
         color: '#374151',
         font: { family: 'Inter' },
+        font: {
+          family: 'Inter',
+        },
       },
     },
   },
@@ -29,6 +32,10 @@ const salesChart = new Chart(document.getElementById('salesLineChart'), {
   type: 'line',
   data: {
     labels: salesLabels,
+new Chart(document.getElementById('salesLineChart'), {
+  type: 'line',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
     datasets: [
       {
         label: 'Sales ($k)',
@@ -49,6 +56,10 @@ const marketingChart = new Chart(document.getElementById('marketingBarChart'), {
   type: 'bar',
   data: {
     labels: marketingLabels,
+new Chart(document.getElementById('marketingBarChart'), {
+  type: 'bar',
+  data: {
+    labels: ['SEO', 'Email', 'Social', 'Paid Ads', 'Referral'],
     datasets: [
       {
         label: 'Leads',
@@ -68,6 +79,10 @@ const operationsChart = new Chart(document.getElementById('operationsPieChart'),
   type: 'pie',
   data: {
     labels: operationsLabels,
+new Chart(document.getElementById('operationsPieChart'), {
+  type: 'pie',
+  data: {
+    labels: ['Logistics', 'Support', 'Infrastructure', 'Quality'],
     datasets: [
       {
         label: 'Operations Split',

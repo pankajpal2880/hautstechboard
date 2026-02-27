@@ -1,21 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Hautstech Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hautstech Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 </head>
-
 <body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">Hautstech</div>
+      <nav class="sidebar-nav">
+        <a class="nav-link active" href="#">Overview</a>
+        <a class="nav-link" href="#">Analytics</a>
+        <a class="nav-link" href="#">Reports</a>
+        <a class="nav-link" href="#">Customers</a>
+        <a class="nav-link" href="#">Settings</a>
+      </nav>
+    </aside>
 
-<h1>Hautstech Company Dashboard</h1>
+    <div class="main-area">
+      <header class="top-navbar">
+        <h1>Admin Dashboard</h1>
+        <div class="user-area">
+          <span class="status-dot"></span>
+          <span>Welcome, Admin</span>
+        </div>
+      </header>
 
-<div class="container">
-  <div class="card">Sales</div>
-  <div class="card">Marketing</div>
-  <div class="card">Operations</div>
-</div>
+      <main class="content">
+        <section class="kpi-grid">
+          <article class="kpi-card">
+            <h2>Total Revenue</h2>
+            <p>$182,450</p>
+            <span class="kpi-trend positive">+8.2% vs last month</span>
+          </article>
+          <article class="kpi-card">
+            <h2>New Customers</h2>
+            <p>1,248</p>
+            <span class="kpi-trend positive">+5.1% vs last month</span>
+          </article>
+          <article class="kpi-card">
+            <h2>Conversion Rate</h2>
+            <p>4.6%</p>
+            <span class="kpi-trend negative">-0.4% vs last month</span>
+          </article>
+          <article class="kpi-card">
+            <h2>Open Tickets</h2>
+            <p>73</p>
+            <span class="kpi-trend positive">-11 resolved today</span>
+          </article>
+        </section>
 
-<script src="app.js"></script>
+        <section class="charts-grid">
+          <article class="chart-card chart-card-wide">
+            <div class="chart-header">
+              <h3>Sales Trend</h3>
+              <span>Last 7 months</span>
+            </div>
+            <canvas id="salesLineChart"></canvas>
+          </article>
 
+          <article class="chart-card">
+            <div class="chart-header">
+              <h3>Marketing Channels</h3>
+              <span>Campaign performance</span>
+            </div>
+            <canvas id="marketingBarChart"></canvas>
+          </article>
+
+          <article class="chart-card">
+            <div class="chart-header">
+              <h3>Operations Allocation</h3>
+              <span>Department split</span>
+            </div>
+            <canvas id="operationsPieChart"></canvas>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

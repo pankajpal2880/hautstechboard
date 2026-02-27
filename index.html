@@ -1,21 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Hautstech Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hautstech Executive Overview</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
-
 <body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="brand">Hautstech</div>
+      <nav class="menu">
+        <a class="menu-link active" href="#">Overview</a>
+        <a class="menu-link" href="#sources">Department Sources</a>
+        <a class="menu-link" href="#rfq-chart-card">RFQ Trends</a>
+        <a class="menu-link" href="#po-chart-card">PO Trends</a>
+      </nav>
+    </aside>
 
-<h1>Hautstech Company Dashboard</h1>
+    <main class="main-area">
+      <header class="topbar">
+        <h1>Executive Dashboard (Read-only)</h1>
+        <div class="admin-badge">Synced from department reports</div>
+      </header>
 
-<div class="container">
-  <div class="card">Sales</div>
-  <div class="card">Marketing</div>
-  <div class="card">Operations</div>
-</div>
+      <section class="content">
+        <article class="card kpi-grid">
+          <div class="kpi">
+            <span>Total Open RFQ (Count)</span>
+            <h2 id="kpi-rfq-open-count">0</h2>
+          </div>
+          <div class="kpi">
+            <span>Total Open RFQ (Value)</span>
+            <h2 id="kpi-rfq-open-value">$0</h2>
+          </div>
+          <div class="kpi">
+            <span>Total Converted to PO (Count)</span>
+            <h2 id="kpi-conv-count">0</h2>
+          </div>
+          <div class="kpi">
+            <span>Total PO Received (Value)</span>
+            <h2 id="kpi-po-value">$0</h2>
+          </div>
+        </article>
 
-<script src="app.js"></script>
+        <article class="card" id="sources">
+          <div class="card-head">
+            <h3>Department Report Sources</h3>
+            <span id="last-sync">Last sync: --</span>
+          </div>
+          <div class="source-grid">
+            <div class="source-item">
+              <h4>Sales Report</h4>
+              <p id="sales-source-note"></p>
+            </div>
+            <div class="source-item">
+              <h4>Purchase Report</h4>
+              <p id="purchase-source-note"></p>
+            </div>
+            <div class="source-item">
+              <h4>Operations Report</h4>
+              <p id="ops-source-note"></p>
+            </div>
+            <div class="source-item">
+              <h4>Marketing Report</h4>
+              <p id="marketing-source-note"></p>
+            </div>
+          </div>
+          <p class="muted-note">This dashboard is for visualization only. Values are read from submitted department reports.</p>
+        </article>
 
+        <article class="card" id="sales-table-card">
+          <h3>Sales Overview Matrix (From Reports)</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Period</th>
+                  <th>Open RFQ in numbers</th>
+                  <th>Open RFQ in value</th>
+                  <th>RFQ converted to PO in numbers</th>
+                  <th>RFQ converted to PO in value</th>
+                  <th>PO received in numbers</th>
+                  <th>PO received in value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Today</td>
+                  <td id="m-open-rfq-num-today"></td>
+                  <td id="m-open-rfq-val-today"></td>
+                  <td id="m-conv-po-num-today"></td>
+                  <td id="m-conv-po-val-today"></td>
+                  <td id="m-po-rec-num-today"></td>
+                  <td id="m-po-rec-val-today"></td>
+                </tr>
+                <tr>
+                  <td>This month</td>
+                  <td id="m-open-rfq-num-month"></td>
+                  <td id="m-open-rfq-val-month"></td>
+                  <td id="m-conv-po-num-month"></td>
+                  <td id="m-conv-po-val-month"></td>
+                  <td id="m-po-rec-num-month"></td>
+                  <td id="m-po-rec-val-month"></td>
+                </tr>
+                <tr>
+                  <td>This year</td>
+                  <td id="m-open-rfq-num-year"></td>
+                  <td id="m-open-rfq-val-year"></td>
+                  <td id="m-conv-po-num-year"></td>
+                  <td id="m-conv-po-val-year"></td>
+                  <td id="m-po-rec-num-year"></td>
+                  <td id="m-po-rec-val-year"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card" id="rfq-chart-card">
+          <div class="card-head">
+            <h3>Graph for RFQ</h3>
+            <label>View:
+              <select id="rfq-period">
+                <option value="daily">Daily</option>
+                <option value="monthly" selected>Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </label>
+          </div>
+          <canvas id="rfqChart"></canvas>
+        </article>
+
+        <article class="card" id="po-chart-card">
+          <div class="card-head">
+            <h3>Graph for PO</h3>
+            <label>View:
+              <select id="po-period">
+                <option value="daily">Daily</option>
+                <option value="monthly" selected>Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </label>
+          </div>
+          <canvas id="poChart"></canvas>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

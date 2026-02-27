@@ -1,21 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Hautstech Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hautstech Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
-
 <body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">Hautstech</div>
+      <nav class="sidebar-nav">
+        <a class="nav-link active" href="#">Overview</a>
+        <a class="nav-link" href="#report-module">Reports</a>
+        <a class="nav-link" href="#sales-module">Sales</a>
+        <a class="nav-link" href="#marketing-module">Marketing</a>
+        <a class="nav-link" href="#operations-module">Operations</a>
+        <a class="nav-link" href="#financial-module">Financial</a>
+      </nav>
+    </aside>
 
-<h1>Hautstech Company Dashboard</h1>
+    <div class="main-area">
+      <header class="top-navbar">
+        <h1>Admin Dashboard</h1>
+        <div class="user-area"><span class="status-dot"></span><span>Welcome, Admin</span></div>
+      </header>
 
-<div class="container">
-  <div class="card">Sales</div>
-  <div class="card">Marketing</div>
-  <div class="card">Operations</div>
-</div>
+      <main class="content">
+        <section class="kpi-grid">
+          <article class="kpi-card"><h2>Sales (Sum)</h2><p id="kpi-sales">$0</p><span class="kpi-trend positive">Manual entries/report</span></article>
+          <article class="kpi-card"><h2>Marketing KPI (Sum)</h2><p id="kpi-marketing">0</p><span class="kpi-trend positive">Manual entries/report</span></article>
+          <article class="kpi-card"><h2>Operations Throughput</h2><p id="kpi-operations">100%</p><span class="kpi-trend positive">From operations module</span></article>
+          <article class="kpi-card"><h2>Financial Net Position</h2><p id="kpi-finance">$0</p><span class="kpi-trend" id="kpi-finance-trend">Revenue - Expense</span></article>
+        </section>
 
-<script src="app.js"></script>
+        <section class="module-grid">
+          <article class="module-card" id="report-module">
+            <h3>Report Input Module</h3>
+            <p>Upload a JSON report file or paste report JSON manually, then visualize.</p>
+            <label for="report-file">Upload report (.json)</label>
+            <input id="report-file" type="file" accept="application/json" />
+            <label for="report-json">Or paste report JSON</label>
+            <textarea id="report-json" rows="6" placeholder='{"sales":[12000,9000],"marketing":[45,55,70],"operations":[35,25,22,18],"finance":{"revenue":210000,"expense":95000}}'></textarea>
+            <button id="apply-report-btn" type="button" class="secondary-btn">Apply Report Data</button>
+          </article>
 
+          <article class="module-card" id="sales-module">
+            <h3>Sales Module (Manual Each Sale)</h3>
+            <p>Add each sale one by one. Values are used to build the Sales chart.</p>
+            <div class="inline-inputs">
+              <input id="sale-entry" type="number" min="0" placeholder="Enter sale amount (e.g. 12000)" />
+              <button id="add-sale-btn" type="button" class="secondary-btn">Add Sale</button>
+            </div>
+            <div id="sales-list" class="entry-list"></div>
+          </article>
+
+          <article class="module-card" id="marketing-module">
+            <h3>Marketing Module (Manual Each KPI)</h3>
+            <p>Add each KPI value one by one for marketing performance.</p>
+            <div class="inline-inputs">
+              <input id="marketing-entry" type="number" min="0" placeholder="Enter KPI value (e.g. 70)" />
+              <button id="add-marketing-btn" type="button" class="secondary-btn">Add KPI</button>
+            </div>
+            <div id="marketing-list" class="entry-list"></div>
+          </article>
+
+          <article class="module-card" id="operations-module">
+            <h3>Operations Module</h3>
+            <p>Enter split for Logistics, Support, Infrastructure, Quality.</p>
+            <label for="operations-values">Allocation percentages (comma separated)</label>
+            <input id="operations-values" type="text" value="35,25,22,18" />
+          </article>
+
+          <article class="module-card" id="financial-module">
+            <h3>Financial Module</h3>
+            <p>Enter total monthly revenue and expense.</p>
+            <div class="financial-inputs">
+              <div><label for="finance-revenue">Revenue ($)</label><input id="finance-revenue" type="number" min="0" value="182000" /></div>
+              <div><label for="finance-expense">Expense ($)</label><input id="finance-expense" type="number" min="0" value="79000" /></div>
+            </div>
+          </article>
+        </section>
+
+        <div class="actions-row">
+          <button id="apply-values-btn" type="button">Apply Manual Module Values</button>
+          <span id="message" role="status" aria-live="polite"></span>
+        </div>
+
+        <section class="charts-grid">
+          <article class="chart-card chart-card-wide"><div class="chart-header"><h3>Sales Trend</h3><span>From each sale entry/report</span></div><canvas id="salesLineChart"></canvas></article>
+          <article class="chart-card"><div class="chart-header"><h3>Marketing KPIs</h3><span>From each KPI entry/report</span></div><canvas id="marketingBarChart"></canvas></article>
+          <article class="chart-card"><div class="chart-header"><h3>Operations Allocation</h3><span>From operations module/report</span></div><canvas id="operationsPieChart"></canvas></article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

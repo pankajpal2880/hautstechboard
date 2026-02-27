@@ -1,21 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Hautstech Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hautstech Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 </head>
-
 <body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">Hautstech</div>
+      <nav class="sidebar-nav">
+        <a class="nav-link active" href="#">Overview</a>
+        <a class="nav-link" href="#sales-module">Sales</a>
+        <a class="nav-link" href="#marketing-module">Marketing</a>
+        <a class="nav-link" href="#operations-module">Operations</a>
+        <a class="nav-link" href="#financial-module">Financial</a>
+      </nav>
+    </aside>
 
-<h1>Hautstech Company Dashboard</h1>
+    <div class="main-area">
+      <header class="top-navbar">
+        <h1>Admin Dashboard</h1>
+        <div class="user-area">
+          <span class="status-dot"></span>
+          <span>Welcome, Admin</span>
+        </div>
+      </header>
 
-<div class="container">
-  <div class="card">Sales</div>
-  <div class="card">Marketing</div>
-  <div class="card">Operations</div>
-</div>
+      <main class="content">
+        <section class="kpi-grid">
+          <article class="kpi-card">
+            <h2>Sales (Monthly)</h2>
+            <p id="kpi-sales">$81,000</p>
+            <span class="kpi-trend positive">Live from Sales module</span>
+          </article>
+          <article class="kpi-card">
+            <h2>Marketing Leads</h2>
+            <p id="kpi-marketing">765</p>
+            <span class="kpi-trend positive">Live from Marketing module</span>
+          </article>
+          <article class="kpi-card">
+            <h2>Operations Throughput</h2>
+            <p id="kpi-operations">100%</p>
+            <span class="kpi-trend positive">Live from Operations module</span>
+          </article>
+          <article class="kpi-card">
+            <h2>Financial Net Position</h2>
+            <p id="kpi-finance">$103,000</p>
+            <span class="kpi-trend" id="kpi-finance-trend">Revenue - Expense</span>
+          </article>
+        </section>
 
-<script src="app.js"></script>
+        <section class="module-grid">
+          <article class="module-card" id="sales-module">
+            <h3>Sales Module</h3>
+            <p>Enter sales values for the last 7 months.</p>
+            <label for="sales-values">Monthly sales (comma separated, in $k)</label>
+            <input id="sales-values" type="text" value="42,50,48,64,72,69,81" />
+          </article>
 
+          <article class="module-card" id="marketing-module">
+            <h3>Marketing Module</h3>
+            <p>Enter leads for SEO, Email, Social, Paid Ads, Referral.</p>
+            <label for="marketing-values">Leads by channel (comma separated)</label>
+            <input id="marketing-values" type="text" value="160,120,210,180,95" />
+          </article>
+
+          <article class="module-card" id="operations-module">
+            <h3>Operations Module</h3>
+            <p>Enter operations split for Logistics, Support, Infrastructure, Quality.</p>
+            <label for="operations-values">Allocation percentages (comma separated)</label>
+            <input id="operations-values" type="text" value="35,25,22,18" />
+          </article>
+
+          <article class="module-card" id="financial-module">
+            <h3>Financial Module</h3>
+            <p>Enter total monthly revenue and expense.</p>
+            <div class="financial-inputs">
+              <div>
+                <label for="finance-revenue">Revenue ($)</label>
+                <input id="finance-revenue" type="number" min="0" value="182000" />
+              </div>
+              <div>
+                <label for="finance-expense">Expense ($)</label>
+                <input id="finance-expense" type="number" min="0" value="79000" />
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <div class="actions-row">
+          <button id="apply-values-btn" type="button">Apply Module Values</button>
+          <span id="message" role="status" aria-live="polite"></span>
+        </div>
+
+        <section class="charts-grid">
+          <article class="chart-card chart-card-wide">
+            <div class="chart-header">
+              <h3>Sales Trend</h3>
+              <span>Updated from Sales module</span>
+            </div>
+            <canvas id="salesLineChart"></canvas>
+          </article>
+
+          <article class="chart-card">
+            <div class="chart-header">
+              <h3>Marketing Channels</h3>
+              <span>Updated from Marketing module</span>
+            </div>
+            <canvas id="marketingBarChart"></canvas>
+          </article>
+
+          <article class="chart-card">
+            <div class="chart-header">
+              <h3>Operations Allocation</h3>
+              <span>Updated from Operations module</span>
+            </div>
+            <canvas id="operationsPieChart"></canvas>
+          </article>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

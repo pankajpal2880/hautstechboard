@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hautstech Admin Dashboard</title>
+  <title>Hautstech Business Dashboard</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,91 +12,108 @@
 <body>
   <div class="dashboard-layout">
     <aside class="sidebar">
-      <div class="sidebar-brand">Hautstech</div>
-      <nav class="sidebar-nav">
-        <a class="nav-link active" href="#">Overview</a>
-        <a class="nav-link" href="#report-module">Reports</a>
-        <a class="nav-link" href="#sales-module">Sales</a>
-        <a class="nav-link" href="#marketing-module">Marketing</a>
-        <a class="nav-link" href="#operations-module">Operations</a>
-        <a class="nav-link" href="#financial-module">Financial</a>
+      <div class="brand">Hautstech One</div>
+      <nav class="menu">
+        <a class="menu-link active" href="#">Dashboard</a>
+        <a class="menu-link" href="#sales-module">Sales</a>
+        <a class="menu-link" href="#purchase-module">Purchases</a>
+        <a class="menu-link" href="#lead-module">Leads</a>
+        <a class="menu-link" href="#report-module">Reports</a>
       </nav>
     </aside>
 
-    <div class="main-area">
-      <header class="top-navbar">
-        <h1>Admin Dashboard</h1>
-        <div class="user-area"><span class="status-dot"></span><span>Welcome, Admin</span></div>
+    <section class="main-area">
+      <header class="topbar">
+        <h1>Business Overview</h1>
+        <div class="admin-badge">● Welcome, Admin</div>
       </header>
 
       <main class="content">
         <section class="kpi-grid">
-          <article class="kpi-card"><h2>Sales (Sum)</h2><p id="kpi-sales">$0</p><span class="kpi-trend positive">Manual entries/report</span></article>
-          <article class="kpi-card"><h2>Marketing KPI (Sum)</h2><p id="kpi-marketing">0</p><span class="kpi-trend positive">Manual entries/report</span></article>
-          <article class="kpi-card"><h2>Operations Throughput</h2><p id="kpi-operations">100%</p><span class="kpi-trend positive">From operations module</span></article>
-          <article class="kpi-card"><h2>Financial Net Position</h2><p id="kpi-finance">$0</p><span class="kpi-trend" id="kpi-finance-trend">Revenue - Expense</span></article>
+          <article class="kpi-card">
+            <span class="kpi-label">Total Sales</span>
+            <h2 id="kpi-sales">$0</h2>
+            <small id="kpi-sales-count">0 entries</small>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-label">Total Purchases</span>
+            <h2 id="kpi-purchase">$0</h2>
+            <small id="kpi-purchase-count">0 entries</small>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-label">Total Leads</span>
+            <h2 id="kpi-lead">0</h2>
+            <small id="kpi-lead-count">0 entries</small>
+          </article>
+          <article class="kpi-card">
+            <span class="kpi-label">Gross Balance</span>
+            <h2 id="kpi-balance">$0</h2>
+            <small id="kpi-balance-status">Sales - Purchases</small>
+          </article>
         </section>
 
         <section class="module-grid">
-          <article class="module-card" id="report-module">
-            <h3>Report Input Module</h3>
-            <p>Upload a JSON report file or paste report JSON manually, then visualize.</p>
-            <label for="report-file">Upload report (.json)</label>
-            <input id="report-file" type="file" accept="application/json" />
-            <label for="report-json">Or paste report JSON</label>
-            <textarea id="report-json" rows="6" placeholder='{"sales":[12000,9000],"marketing":[45,55,70],"operations":[35,25,22,18],"finance":{"revenue":210000,"expense":95000}}'></textarea>
-            <button id="apply-report-btn" type="button" class="secondary-btn">Apply Report Data</button>
-          </article>
-
           <article class="module-card" id="sales-module">
-            <h3>Sales Module (Manual Each Sale)</h3>
-            <p>Add each sale one by one. Values are used to build the Sales chart.</p>
-            <div class="inline-inputs">
-              <input id="sale-entry" type="number" min="0" placeholder="Enter sale amount (e.g. 12000)" />
-              <button id="add-sale-btn" type="button" class="secondary-btn">Add Sale</button>
+            <h3>Sales Module</h3>
+            <p>Add each sale transaction manually.</p>
+            <div class="input-row">
+              <input id="sale-input" type="number" min="0" placeholder="Enter sale amount" />
+              <button id="add-sale-btn" type="button">Add Sale</button>
             </div>
-            <div id="sales-list" class="entry-list"></div>
+            <div id="sales-list" class="chip-list"></div>
           </article>
 
-          <article class="module-card" id="marketing-module">
-            <h3>Marketing Module (Manual Each KPI)</h3>
-            <p>Add each KPI value one by one for marketing performance.</p>
-            <div class="inline-inputs">
-              <input id="marketing-entry" type="number" min="0" placeholder="Enter KPI value (e.g. 70)" />
-              <button id="add-marketing-btn" type="button" class="secondary-btn">Add KPI</button>
+          <article class="module-card" id="purchase-module">
+            <h3>Purchase Module</h3>
+            <p>Add each purchase transaction manually.</p>
+            <div class="input-row">
+              <input id="purchase-input" type="number" min="0" placeholder="Enter purchase amount" />
+              <button id="add-purchase-btn" type="button">Add Purchase</button>
             </div>
-            <div id="marketing-list" class="entry-list"></div>
+            <div id="purchase-list" class="chip-list"></div>
           </article>
 
-          <article class="module-card" id="operations-module">
-            <h3>Operations Module</h3>
-            <p>Enter split for Logistics, Support, Infrastructure, Quality.</p>
-            <label for="operations-values">Allocation percentages (comma separated)</label>
-            <input id="operations-values" type="text" value="35,25,22,18" />
+          <article class="module-card" id="lead-module">
+            <h3>Lead Module</h3>
+            <p>Add each lead KPI manually (daily or campaign-wise).</p>
+            <div class="input-row">
+              <input id="lead-input" type="number" min="0" placeholder="Enter lead count" />
+              <button id="add-lead-btn" type="button">Add Lead</button>
+            </div>
+            <div id="lead-list" class="chip-list"></div>
           </article>
 
-          <article class="module-card" id="financial-module">
-            <h3>Financial Module</h3>
-            <p>Enter total monthly revenue and expense.</p>
-            <div class="financial-inputs">
-              <div><label for="finance-revenue">Revenue ($)</label><input id="finance-revenue" type="number" min="0" value="182000" /></div>
-              <div><label for="finance-expense">Expense ($)</label><input id="finance-expense" type="number" min="0" value="79000" /></div>
-            </div>
+          <article class="module-card" id="report-module">
+            <h3>Report Module</h3>
+            <p>Upload or paste JSON report and apply it to the dashboard.</p>
+            <label for="report-file">Upload JSON</label>
+            <input id="report-file" type="file" accept="application/json" />
+            <label for="report-text">Paste JSON</label>
+            <textarea id="report-text" rows="5" placeholder='{"sales":[12000,18000],"purchase":[7000,9000],"lead":[55,90]}'></textarea>
+            <button id="apply-report-btn" type="button" class="secondary">Apply Report</button>
           </article>
         </section>
 
-        <div class="actions-row">
-          <button id="apply-values-btn" type="button">Apply Manual Module Values</button>
-          <span id="message" role="status" aria-live="polite"></span>
+        <div class="status-row">
+          <span id="status-msg">Ready</span>
         </div>
 
-        <section class="charts-grid">
-          <article class="chart-card chart-card-wide"><div class="chart-header"><h3>Sales Trend</h3><span>From each sale entry/report</span></div><canvas id="salesLineChart"></canvas></article>
-          <article class="chart-card"><div class="chart-header"><h3>Marketing KPIs</h3><span>From each KPI entry/report</span></div><canvas id="marketingBarChart"></canvas></article>
-          <article class="chart-card"><div class="chart-header"><h3>Operations Allocation</h3><span>From operations module/report</span></div><canvas id="operationsPieChart"></canvas></article>
+        <section class="chart-grid">
+          <article class="chart-card wide">
+            <h3>Sales Trend</h3>
+            <canvas id="salesChart"></canvas>
+          </article>
+          <article class="chart-card">
+            <h3>Purchase Trend</h3>
+            <canvas id="purchaseChart"></canvas>
+          </article>
+          <article class="chart-card">
+            <h3>Lead Trend</h3>
+            <canvas id="leadChart"></canvas>
+          </article>
         </section>
       </main>
-    </div>
+    </section>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
